@@ -1,4 +1,4 @@
-### NFS 설정
+#NFS 설정
 
 1. NFS 설치
 - yum install nfs-utils
