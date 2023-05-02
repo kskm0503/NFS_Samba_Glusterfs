@@ -47,12 +47,12 @@ Ubuntu에서 실습 진행
 
 1. nfs 설치
 - apt install nfs-common
-
+-------------------
 2. 마운트 지점 생성
 - mkdir /usr1
-
+-------------------
 3 마운트 실행
 - sudo mount 192.168.194.130:/usr1 /usr1
-
+-------------------
 4. fstab 등록
 - 192.168.194.130:/usr1 /usr1 nfs sync 0 0
