@@ -1,4 +1,5 @@
 # Samba
+mc 라는 패키지 설치시 GUI Samba 설정 
 -----------------
 
 1. 패키지 설치
@@ -38,6 +39,7 @@ read only = no
 4. 설정파일 테스트
 
 - testparm
+* 이상없을 시 ok 싸인 떨어짐
 
 5. 서비스 재시작
 
@@ -73,6 +75,17 @@ browsable = yes
 
 # SMB CLIENT
 
-sudo dnf install samba-client
+1. Samba 설치
+- sudo dnf install samba-client
 
-smbclient ‘\2.168.43.121\private’ -U smbuser
+2. smb client 연동
+smbclient ‘\Samba IP\home/keomu/share’ -U smbuser
+
+
+----------------------------------------------
+
+# Samba Server
+
+1. Samba 서버 확인
+
+- smbstatus로 Samba 서버상태 확인 가능
