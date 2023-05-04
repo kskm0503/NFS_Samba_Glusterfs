@@ -168,7 +168,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Storage </br>
 ####3. 마운트 진행
 - mount.glusterfs keonmu1:/myvolume /data
 ------------------  
-####4. 서비스 확인
+####4. 서비스 확인 </br>
 [root@keonmu3 ~]# df -hT </br>
 Filesystem          Type            Size  Used Avail Use% Mounted on </br>
 devtmpfs            devtmpfs        359M     0  359M   0% /dev </br>
