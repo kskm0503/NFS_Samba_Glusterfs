@@ -180,12 +180,12 @@ tmpfs               tmpfs           389M     0  389M   0% /sys/fs/cgroup </br>
 tmpfs               tmpfs            78M   56K   78M   1% /run/user/1000 </br>
 keonmu1:/myvolume   fuse.glusterfs   20G  201M   19G   2% /data </br>
 
-- 파일 생성 테스트 </br>
-  서버 1/2에서 /data/vol1/brick0  , /data/vol2/brick0 확인하면 동일한 파일 생성 확인 가능 </br>
-  [root@keonmu3 data]# pwd </br>
-  /data </br> </br>
-  [root@keonmu3 data]# ls -al </br>
-  합계 4  </br>
-  drwxr-xr-x.  4 root root 4096  5월  3 21:43 . </br>
-  dr-xr-xr-x. 18 root root  236  5월  3 14:06 .. </br>
-  -rw-r--r--.  1 root root    0  5월  3 21:43 keonmu1 </br>
+파일 생성 테스트 </br>
+서버 1/2에서 /data/vol1/brick0  , /data/vol2/brick0 확인하면 동일한 파일 생성 확인 가능 </br>
+[root@keonmu3 data]# pwd </br>
+ /data </br> </br>
+[root@keonmu3 data]# ls -al </br>
+합계 4  </br>
+drwxr-xr-x.  4 root root 4096  5월  3 21:43 . </br>
+dr-xr-xr-x. 18 root root  236  5월  3 14:06 .. </br>
+-rw-r--r--.  1 root root    0  5월  3 21:43 keonmu1 </br>
