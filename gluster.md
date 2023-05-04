@@ -15,7 +15,6 @@
 #### Disk 할당
 - Rocky Gluster Server 2대에 20GB disk 하나씩 할당
 ------------------
-
 ## Gluster Server 구축
 
 #### 1. 디스크 마운트
@@ -57,14 +56,14 @@ Device     Boot Start      End  Sectors Size Id Type </br>
   mount -a  </br> 
   /dev/sdb1           ext4       20G  1.2M   19G   1% /data/vol1 </br> 
   /dev/sdc1           ext4       20G  1.2M   19G   1% /data/vol2 </br> 
-
+------------------
 #### 2. 디렉터리 생성
 - mkdir -p /data/vol1/brick0
 - mkdir -p /data/vol2/brick0
-
+------------------
 #### 3. 패키지 설치
 - dnf install centos-release-gluster9 </br>
-  
+------------------
 #### 4. Repository 수정
 - cd /etc/yum.repos.d/
   vi CentOS-Gluster-9.repo
@@ -84,19 +83,19 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Storage </br>
   baseos                             Rocky Linux 8 - BaseOS </br> 
   centos-gluster9                    CentOS-8 - Gluster 9 </br> 
   extras                             Rocky Linux 8 - Extras </br> 
-
+------------------
 #### 5. Gluster Package 설치
 - dnf install glusterfs glusterfs-libs glusterfs-server
 - systemctl start glusterfsd.service
 - systemctl enable glusterfsd.service
 - systemctl status glusterfsd.service
 - systemctl start glusterd.service
-
+------------------
 #### 6. 방화벽 설정
 - systemctl status glusterfsd.service
 - firewall-cmd --reload
 - firewall-cmd --list-services
-
+------------------
 #### 7. Gluster 초기화
 
 - gluster peer probe keonmu2 </br> 
@@ -113,7 +112,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Storage </br>
   Hostname: keonmu1 </br> 
   Uuid: 1722201d-a49b-44d9-b679-5767eab1de85 </br> 
   State: Peer in Cluster (Connected) </br> 
-
+------------------
 #### 8. Gluster 볼륨 생성
 - gluster volume create myvolume replica 2 keonmu1:/data/vol1/brick0 keonmu2:/data/vol2/brick0 </br> 
   Replica 2 volumes are prone to split-brain. Use Arbiter or Replica 3 to avoid this. See:             
@@ -121,11 +120,11 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Storage </br>
   Do you still want to continue? </br> 
   (y/n) y </br> 
   volume create: myvolume: success: please start the volume to access data </br> 
-  
+------------------  
 #### 9. Gluster 서비스 시작
 - gluster volume start myvolume </br>
   volume start: myvolume: success </br>
-    
+------------------    
 #### 10. Gluster 서비스 확인  
   - gluster volume status myvolume </br>
     Status of volume: myvolume </br>
@@ -157,4 +156,36 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Storage </br>
      transport.address-family: inet </br>
      nfs.disable: on </br>
      performance.client-io-threads: off </br>
+------------------  
+## Gluster Client 구축
 
+####1. 패키지 설치
+-  dnf install glusterfs-client
+------------------  
+####2. Directory 생성
+- mkdir /data
+------------------  
+####3. 마운트 진행
+- mount.glusterfs keonmu1:/myvolume /data
+------------------  
+####4. 서비스 확인
+[root@keonmu3 ~]# df -hT </br>
+Filesystem          Type            Size  Used Avail Use% Mounted on </br>
+devtmpfs            devtmpfs        359M     0  359M   0% /dev </br>
+tmpfs               tmpfs           389M     0  389M   0% /dev/shm </br>
+tmpfs               tmpfs           389M   12M  378M   3% /run </br>
+tmpfs               tmpfs           389M     0  389M   0% /sys/fs/cgroup </br>
+/dev/mapper/rl-root xfs              47G  5.2G   42G  12% / </br>
+/dev/sda1           xfs            1014M  260M  755M  26% /boot </br>
+tmpfs               tmpfs            78M   56K   78M   1% /run/user/1000 </br>
+keonmu1:/myvolume   fuse.glusterfs   20G  201M   19G   2% /data </br>
+
+- 파일 생성 테스트 </br>
+  서버 1/2에서 /data/vol1/brick0  , /data/vol2/brick0 확인하면 동일한 파일 생성 확인 가능 </br>
+  [root@keonmu3 data]# pwd </br>
+  /data </br> </br>
+  [root@keonmu3 data]# ls -al </br>
+  합계 4  </br>
+  drwxr-xr-x.  4 root root 4096  5월  3 21:43 . </br>
+  dr-xr-xr-x. 18 root root  236  5월  3 14:06 .. </br>
+  -rw-r--r--.  1 root root    0  5월  3 21:43 keonmu1 </br>
